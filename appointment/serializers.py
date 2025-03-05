@@ -11,7 +11,7 @@ class DoctorTypeSerializer(serializers.ModelSerializer):
 
 
 class DoctorNameSerializer(serializers.ModelSerializer):
-    main_specialization = serializers.PrimaryKeyRelatedField(queryset=DoctorType.objects.all()) # ściągamy pk z querysetu 
+    main_specialization = serializers.PrimaryKeyRelatedField(queryset=DoctorType.objects.all()) # ściągamy pk z querysetu, "main_specialization" - nazwa variable z modelu
     specialization_name = serializers.CharField(source="main_specialization.__str__", read_only=True)  # dodajemy pole tylko do odczytu, które poda __str__ z modelu - w ten sposób będzie widać nazwisko lekarza a nie tylko jego numer
 
     class Meta:
