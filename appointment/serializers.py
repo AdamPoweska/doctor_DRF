@@ -11,12 +11,16 @@ class DoctorTypeSerializer(serializers.ModelSerializer):
 
 
 class DoctorNameSerializer(serializers.ModelSerializer):
+    main_specialization = DoctorTypeSerializer()
+
     class Meta:
         model = DoctorName
         fields = '__all__'
 
 
 class AppointmentDateseSerializer(serializers.ModelSerializer):
+    doctor = DoctorNameSerializer()
+
     class Meta:
         model = AppointmentDates
         fields = '__all__'

@@ -5,8 +5,10 @@ from . import views
 
 # Create a router and register our ViewSets with it.
 router = DefaultRouter()
-router.register(r'data_crud_view_set', views.DataCrudViewSet, basename='data_crud_view_set')
-router.register(r'data_view_set', views.DataViewSet, basename='data_view_set')
+router.register(r'doctor_type_crud_view_set', views.DoctorTypeCrudViewSet, basename='doctor_type_crud_view_set')
+router.register(r'doctor_name_crud_view_set', views.DoctorNameCrudViewSet, basename='doctor_name_crud_view_set')
+router.register(r'appointment_date_crud_view_set', views.AppointmentDateCrudViewSet, basename='appointment_date_crud_view_set')
+
 
 # The API URLs are now determined automatically by the router.
 urlpatterns = [
