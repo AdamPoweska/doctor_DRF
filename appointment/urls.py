@@ -5,7 +5,7 @@ from . import views
 
 # Create a router and register our ViewSets with it.
 router = DefaultRouter()
-# router.register(r'snippets', views.SnippetViewSet, basename='snippet')
+router.register(r'data_crud_view_set', views.DataCrudViewSet, basename='data_crud_view_set')
 router.register(r'data_view_set', views.DataViewSet, basename='data_view_set')
 
 # The API URLs are now determined automatically by the router.
