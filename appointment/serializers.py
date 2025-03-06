@@ -34,7 +34,11 @@ class AppointmentDateseSerializer(serializers.ModelSerializer):
 
 
 
-# poniższe przy dodawaniu użytkowników
+
+
+
+
+# poniższe przy dodawaniu użytkowników - z tutoriala
 # class FinalAppointmentDetailsSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = FinalAppointmentDetails
