@@ -14,7 +14,7 @@ class AppointmentDateCrudViewSet(viewsets.ModelViewSet):
     (C)reate (R)ead (U)date (D)elete actions.
     """
     queryset = AppointmentDates.objects.all()
-    serializer_class = AppointmentDateseSerializer
+    serializer_class = AppointmentDatesSerializer
 
 
 class DoctorNameCrudViewSet(viewsets.ModelViewSet):

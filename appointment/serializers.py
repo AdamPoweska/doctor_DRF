@@ -4,13 +4,13 @@ from django.contrib.auth.models import User, Group
 from .models import *
 
 
-class DoctorTypeSerializer(serializers.ModelSerializer):
+class DoctorTypeSerializer(serializers.HyperlinkedModelSerializer): #HyperlinkedModelSerializer - dodaje linki, żeby można było wchodzić w opcje: delete, patch, put poprzez link a nie poprzez wpisywanie w przeglądarkę
     class Meta:
         model = DoctorType
-        fields = '__all__'
+        fields = ['url', 'id', 'specialization']
 
 
-class DoctorNameSerializer(serializers.ModelSerializer):
+class DoctorNameSerializer(serializers.HyperlinkedModelSerializer):
     main_specialization = serializers.PrimaryKeyRelatedField(queryset=DoctorType.objects.all()) # ściągamy pk z querysetu, "main_specialization" - nazwa variable z modelu
     specialization_name = serializers.CharField(source="main_specialization.__str__", read_only=True)  # dodajemy pole tylko do odczytu, które poda __str__ z modelu - w ten sposób będzie widać nazwisko lekarza a nie tylko jego numer
 
@@ -19,7 +19,7 @@ class DoctorNameSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class AppointmentDateseSerializer(serializers.ModelSerializer):
+class AppointmentDatesSerializer(serializers.HyperlinkedModelSerializer):
     doctor = serializers.PrimaryKeyRelatedField(queryset=DoctorName.objects.all())
     doctor_details = serializers.CharField(source="doctor.__str__", read_only=True)
 
