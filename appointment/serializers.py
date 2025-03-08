@@ -16,7 +16,7 @@ class DoctorNameSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = DoctorName
-        fields = '__all__'
+        fields = ['url', 'id', 'first_name', 'last_name', 'main_specialization', 'specialization_name']
 
 
 class AppointmentDatesSerializer(serializers.HyperlinkedModelSerializer):
@@ -25,7 +25,7 @@ class AppointmentDatesSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = AppointmentDates
-        fields = '__all__'
+        fields = ['url', 'id', 'doctor', 'date', 'time', 'doctor_details']
 
 
 
