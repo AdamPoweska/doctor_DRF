@@ -3,7 +3,10 @@ from django.db import models
 
 
 class DoctorType(models.Model):
-    specialization = models.CharField(max_length=50)
+    specialization = models.CharField(
+        max_length=50,
+        unique=True # unique na poziomie bazy danych
+    )
 
     def __str__(self):
         return f"{self.specialization}"

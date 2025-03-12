@@ -1,10 +1,16 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 from django.contrib.auth.models import User, Group
 
 from .models import *
 
 
-class DoctorTypeSerializer(serializers.HyperlinkedModelSerializer): #HyperlinkedModelSerializer - dodaje linki, żeby można było wchodzić w opcje: delete, patch, put poprzez link a nie poprzez wpisywanie w przeglądarkę
+class DoctorTypeSerializer(serializers.HyperlinkedModelSerializer): #HyperlinkedModelSerializer - dodaje linki, żeby można było wchodzić w opcje: delete, patch, put poprzez link a nie poprzez wpisywanie w przeglądarkę, jest też bardziej zgodne z filozofią REST: "HATEOAS – Hypermedia as the Engine of Application State"
+    specialization = serializers.CharField(
+        max_length=50,
+        validators=[UniqueValidator(queryset=DoctorType.objects.all())] # sprawdzenie przed zapisem przy użyciu validators
+    )
+    
     class Meta:
         model = DoctorType
         fields = ['url', 'id', 'specialization']
@@ -26,8 +32,6 @@ class AppointmentDatesSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = AppointmentDates
         fields = ['url', 'id', 'doctor', 'date', 'time', 'doctor_details']
-
-
 
 
 
