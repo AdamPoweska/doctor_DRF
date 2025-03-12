@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
+from rest_framework.validators import UniqueValidator, UniqueTogetherValidator
 from django.contrib.auth.models import User, Group
 
 from .models import *
@@ -23,6 +23,11 @@ class DoctorNameSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = DoctorName
         fields = ['url', 'id', 'first_name', 'last_name', 'main_specialization', 'specialization_name']
+        # UniqueTogetherValidator - sprawdzamy czy kombinacja danych pól już występuje
+        validators = [UniqueTogetherValidator(
+            queryset=DoctorName.objects.all(),
+            fields=['first_name', 'last_name', 'main_specialization']
+        )]
 
 
 class AppointmentDatesSerializer(serializers.HyperlinkedModelSerializer):
@@ -32,6 +37,10 @@ class AppointmentDatesSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = AppointmentDates
         fields = ['url', 'id', 'doctor', 'date', 'time', 'doctor_details']
+        validators = [UniqueTogetherValidator(
+            queryset=AppointmentDates.objects.all(),
+            fields=['doctor', 'date', 'time']
+        )]
 
 
 
