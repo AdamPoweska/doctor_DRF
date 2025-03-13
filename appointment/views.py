@@ -1,10 +1,6 @@
 # Create your views here.
 from rest_framework import viewsets
 from rest_framework import permissions
-from rest_framework import renderers
-from rest_framework.decorators import action
-from rest_framework.permissions import BasePermission
-from rest_framework.response import Response
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
@@ -27,10 +23,14 @@ from .models import *
 #         context["appointments"] = AppointmentDates.objects.all()
 #         return context
 
-class IsSuperUser(BasePermission):
-    def has_permission(self, request, view):
-        return request.user and request.user.is_superuser
 
+class IsReadOnly(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS: # safe_methods to GET', 'HEAD', 'OPTIONS' - czyli do tego moga miec dostep wszycy
+            return True
+        elif request.user and request.user.is_staff: # jesli nie sa to safe methods ale uzytkownik jest zalogowany i jest adminem
+            return True
+        
 
 class AppointmentDateCrudViewSet(viewsets.ModelViewSet):
     """
@@ -47,7 +47,7 @@ class DoctorNameCrudViewSet(viewsets.ModelViewSet):
     """
     queryset = DoctorName.objects.all()
     serializer_class = DoctorNameSerializer
-    permission_classes = [IsSuperUser]
+    permission_classes = [IsReadOnly]
 
 
 class DoctorTypeCrudViewSet(viewsets.ModelViewSet):
@@ -56,7 +56,7 @@ class DoctorTypeCrudViewSet(viewsets.ModelViewSet):
     """
     queryset = DoctorType.objects.all()
     serializer_class = DoctorTypeSerializer
-    permission_classes = [IsSuperUser]
+    permission_classes = [IsReadOnly]
 
 
 
