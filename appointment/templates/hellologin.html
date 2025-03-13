@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Please select action:</h1>
+<h1>Welcome to the Appointment System</h1>
+
+<h2>Available Doctors:</h2>
+<ul>
+    {% for doctor in doctors %}
+        <li>{{ doctor.first_name }} {{ doctor.last_name }} ({{ doctor.main_specialization }})</li>
+    {% empty %}
+        <li>No doctors available.</li>
+    {% endfor %}
+</ul>
+
+<h2>Available Specializations:</h2>
+<ul>
+    {% for specialization in specializations %}
+        <li>{{ specialization.specialization }}</li>
+    {% empty %}
+        <li>No specializations available.</li>
+    {% endfor %}
+</ul>
+
+<h2>Available Appointments:</h2>
+<ul>
+    {% for appointment in appointments %}
+        <li>Dr. {{ appointment.doctor }} - {{ appointment.date }} at {{ appointment.time }}</li>
+    {% empty %}
+        <li>No appointments available.</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

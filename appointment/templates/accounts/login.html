@@ -1,0 +1,8 @@
+<h2>Logowanie</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Zaloguj</button>
+    <br><br>
+    <a href="{% url 'hello' %}"><small>Main page</small></a>
+</form>

@@ -134,6 +134,13 @@ REST_FRAMEWORK = {
     'DEFAULT_HTTP_METHODS': ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
-    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny',], # jeśli dostęp mają mieć wszyscy
-    # 'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated',], # jeśli dostęp mają tylko auteticated users
+    # 'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny',], # jeśli dostęp mają mieć wszyscy
+    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated',], # jeśli dostęp mają tylko zalogowani
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',  # Pozwala na logowanie przez stronę API
+        'rest_framework.authentication.BasicAuthentication',  # Możesz dodać Basic Auth
+    ],
 }
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
