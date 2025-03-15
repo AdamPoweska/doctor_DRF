@@ -22,7 +22,10 @@ class DoctorNameSerializer(serializers.HyperlinkedModelSerializer):
     # specialization_name = serializers.CharField(source="main_specialization.__str__", read_only=True)  # dodajemy pole tylko do odczytu, które poda __str__ z modelu - w ten sposób będzie widać nazwisko lekarza a nie tylko jego numer
     
     # lub użyć metody SlugRelatedField
-    main_specialization = serializers.SlugRelatedField(queryset=DoctorType.objects.all(), slug_field='specialization')
+    # main_specialization = serializers.SlugRelatedField(queryset=DoctorType.objects.all(), slug_field='specialization')
+    
+    # Jednak rezygnuje z powyższego, żeby zrobic nested serializer, ktory i tak wszystko wyswietli
+    main_specialization = DoctorTypeSerializer(read_only=True)
     
 
     class Meta:
@@ -36,12 +39,14 @@ class DoctorNameSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class AppointmentDatesSerializer(serializers.HyperlinkedModelSerializer):
-    doctor = serializers.PrimaryKeyRelatedField(queryset=DoctorName.objects.all())
-    doctor_details = serializers.CharField(source="doctor.__str__", read_only=True)
+    # doctor = serializers.PrimaryKeyRelatedField(queryset=DoctorName.objects.all())
+    # doctor_details = serializers.CharField(source="doctor.__str__", read_only=True)
+
+    doctor = DoctorNameSerializer(read_only=True)
 
     class Meta:
         model = AppointmentDates
-        fields = ['url', 'id', 'doctor', 'date', 'time', 'doctor_details']
+        fields = ['url', 'id', 'doctor', 'date', 'time']
         validators = [UniqueTogetherValidator(
             queryset=AppointmentDates.objects.all(),
             fields=['doctor', 'date', 'time']
