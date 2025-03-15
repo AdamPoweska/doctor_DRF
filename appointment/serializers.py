@@ -17,12 +17,17 @@ class DoctorTypeSerializer(serializers.HyperlinkedModelSerializer): #Hyperlinked
 
 
 class DoctorNameSerializer(serializers.HyperlinkedModelSerializer):
-    main_specialization = serializers.PrimaryKeyRelatedField(queryset=DoctorType.objects.all()) # ściągamy pk z querysetu, "main_specialization" - nazwa variable z modelu
-    specialization_name = serializers.CharField(source="main_specialization.__str__", read_only=True)  # dodajemy pole tylko do odczytu, które poda __str__ z modelu - w ten sposób będzie widać nazwisko lekarza a nie tylko jego numer
+    # mogę użyć poniższego kodu żeby wyciągnąć nazwę specjalizacji tak żeby nie widniała tylko jako numer
+    # main_specialization = serializers.PrimaryKeyRelatedField(queryset=DoctorType.objects.all()) # ściągamy pk z querysetu, "main_specialization" - nazwa variable z modelu
+    # specialization_name = serializers.CharField(source="main_specialization.__str__", read_only=True)  # dodajemy pole tylko do odczytu, które poda __str__ z modelu - w ten sposób będzie widać nazwisko lekarza a nie tylko jego numer
+    
+    # lub użyć metody SlugRelatedField
+    main_specialization = serializers.SlugRelatedField(queryset=DoctorType.objects.all(), slug_field='specialization')
+    
 
     class Meta:
         model = DoctorName
-        fields = ['url', 'id', 'first_name', 'last_name', 'main_specialization', 'specialization_name']
+        fields = ['url', 'id', 'first_name', 'last_name', 'main_specialization']
         # UniqueTogetherValidator - sprawdzamy czy kombinacja danych pól już występuje
         validators = [UniqueTogetherValidator(
             queryset=DoctorName.objects.all(),

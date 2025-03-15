@@ -6,9 +6,9 @@ from . import views
 
 
 router = DefaultRouter()
-router.register(r'doctor_type_crud_view_set', views.DoctorTypeCrudViewSet, basename='doctortype')
-router.register(r'doctor_name_crud_view_set', views.DoctorNameCrudViewSet, basename='doctorname')
-router.register(r'appointment_date_crud_view_set', views.AppointmentDateCrudViewSet, basename='appointmentdates')
+router.register(r'doctor_types', views.DoctorTypeCrudViewSet, basename='doctortype')
+router.register(r'doctor_names', views.DoctorNameCrudViewSet, basename='doctorname')
+router.register(r'appointments', views.AppointmentDateCrudViewSet, basename='appointmentdates')
 
 urlpatterns = [
     # path('', views.HomeView.as_view(), name='hello'),

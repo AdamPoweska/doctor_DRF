@@ -18,7 +18,7 @@ class DoctorName(models.Model):
     main_specialization = models.ForeignKey(DoctorType, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} {self.main_specialization}"
+        return f"{self.first_name} {self.last_name} ({self.main_specialization.specialization})" # "main_specialization" to obiekt DoctorType wiec __str__ zwróci np. "object (3)"
 
 
 class AppointmentDates(models.Model):
@@ -36,4 +36,4 @@ class FinalAppointmentDetails(models.Model):
     visit_date = models.ForeignKey(AppointmentDates, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Your visit with {self.doctor_name} ({self.doctor_type}) as of: {self.visit_date.date} at: {self.visit_date.time}"
+        return f"Your visit with {self.doctor_name.first_name} {self.doctor_name.last_name} ({self.doctor_type.specialization}) as of: {self.visit_date.date} at: {self.visit_date.time}"
