@@ -24,13 +24,19 @@ class DoctorNameSerializer(serializers.ModelSerializer):
     # lub użyć metody SlugRelatedField
     # main_specialization = serializers.SlugRelatedField(queryset=DoctorType.objects.all(), slug_field='specialization')
     
+    # kod tylko do zapisu - przy nested nie pojawi nam sie dropdown lista
+    main_specialization_id = serializers.PrimaryKeyRelatedField(
+        queryset=DoctorType.objects.all(),
+        source='main_specialization',
+        write_only=True
+    )
     # Jednak rezygnuje z powyższego, żeby zrobic nested serializer, ktory i tak wszystko wyswietli
     main_specialization = DoctorTypeSerializer(read_only=True)
     
 
     class Meta:
         model = DoctorName
-        fields = ['id', 'first_name', 'last_name', 'main_specialization']
+        fields = ['id', 'first_name', 'last_name', 'main_specialization', 'main_specialization_id']
         # UniqueTogetherValidator - sprawdzamy czy kombinacja danych pól już występuje
         validators = [UniqueTogetherValidator(
             queryset=DoctorName.objects.all(),
@@ -39,14 +45,22 @@ class DoctorNameSerializer(serializers.ModelSerializer):
 
 
 class AppointmentDatesSerializer(serializers.ModelSerializer):
-    # doctor = serializers.PrimaryKeyRelatedField(queryset=DoctorName.objects.all())
-    # doctor_details = serializers.CharField(source="doctor.__str__", read_only=True)
+    doctor = serializers.PrimaryKeyRelatedField(queryset=DoctorName.objects.all())
+    doctor_details = serializers.CharField(source="doctor.__str__", read_only=True)
 
-    doctor = DoctorNameSerializer(read_only=True)
+    # kod tylko do zapisu - przy nested nie pojawi nam sie dropdown lista
+    # doctor_specialization = serializers.PrimaryKeyRelatedField(
+    #     queryset=DoctorType.objects.all(),
+    #     source='main_specialization',
+    #     write_only=True
+    # )
+
+    # doctor = DoctorNameSerializer(read_only=True)
 
     class Meta:
         model = AppointmentDates
-        fields = ['id', 'doctor', 'date', 'time']
+        # fields = ['id','doctor_specialization', 'doctor', 'date', 'time']
+        fields = ['id', 'doctor', 'doctor_details', 'date', 'time']
         validators = [UniqueTogetherValidator(
             queryset=AppointmentDates.objects.all(),
             fields=['doctor', 'date', 'time']
