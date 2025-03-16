@@ -1,6 +1,7 @@
 # Create your views here.
-from rest_framework import viewsets
-from rest_framework import permissions
+from rest_framework import viewsets, permissions, status
+from rest_framework.response import Response
+from rest_framework.decorators import action
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
@@ -59,8 +60,40 @@ class DoctorTypeCrudViewSet(viewsets.ModelViewSet):
     permission_classes = [IsReadOnly]
 
 
+class DoctorTypeViewSet(viewsets.ModelViewSet):
+    queryset = DoctorType.objects.all()
+    serializer_class = DoctorTypeSerializer
+    permission_classes = [IsReadOnly]
+
+    # /doctor_types/<id>/doctors/
+    @action(detail=True, methods=['get'])
+    def doctors(self, request, pk=None):
+        specialization = self.get_object()
+        doctors = DoctorName.objects.filter(main_specialization=specialization)
+        serializer = DoctorNameSimpleSerializer(doctors, many=True, context={'request': request})
+        return Response(serializer.data)
 
 
+class DoctorNameNestedViewSet(viewsets.ViewSet):
+    permission_classes = [IsReadOnly]
+
+    # /doctor_types/<doctor_type_pk>/doctors/<doctor_pk>/
+    def retrieve(self, request, doctor_type_pk=None, pk=None):
+        try:
+            doctor = DoctorName.objects.get(pk=pk, main_specialization__id=doctor_type_pk)
+        except DoctorName.DoesNotExist:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = DoctorNameDetailSerializer(doctor, context={'request': request})
+        return Response(serializer.data)
+
+
+class DoctorNameNestedViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = DoctorNameNestedSerializer
+
+    def get_queryset(self):
+        # Pobieramy tylko lekarzy dla konkretnej specjalizacji
+        return DoctorName.objects.filter(main_specialization_id=self.kwargs['doctor_type_pk'])
 
 
 
