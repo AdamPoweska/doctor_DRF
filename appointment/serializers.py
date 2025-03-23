@@ -13,15 +13,16 @@ class DoctorTypeSerializer(serializers.ModelSerializer):
     )
     
     # zamiast zwykłego pola będzie wywołana metoda 'get_doctors' wg wzorca 'get_{field_name}'
-    doctors = serializers.SerializerMethodField()
+    # doctors = serializers.SerializerMethodField()
 
     class Meta:
         model = DoctorType
-        fields = ['id', 'specialization', 'doctors']
+        # fields = ['id', 'specialization', 'doctors']
+        fields = ['id', 'specialization']
     
-    def get_doctors(self, obj): # 'obj' jest przekazywany automatycznie przez DRF przy serializowaniu obiektu
-        doctors = DoctorName.objects.filter(main_specialization=obj) # filtracja lekarzy po obj
-        return DoctorNameSimpleSerializer(doctors, many=True).data # zwrócenie danych opakowanych w klasę 'DoctorNameSimpleSerializer' --> klasa jest zaraz poniżej w kodzie
+    # def get_doctors(self, obj): # 'obj' jest przekazywany automatycznie przez DRF przy serializowaniu obiektu
+    #     doctors = DoctorName.objects.filter(main_specialization=obj) # filtracja lekarzy po obj
+    #     return DoctorNameSimpleSerializer(doctors, many=True).data # zwrócenie danych opakowanych w klasę 'DoctorNameSimpleSerializer' --> klasa jest zaraz poniżej w kodzie
 
 
 class DoctorNameSimpleSerializer(serializers.ModelSerializer):

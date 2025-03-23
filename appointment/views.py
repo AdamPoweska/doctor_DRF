@@ -51,13 +51,13 @@ class DoctorNameCrudViewSet(viewsets.ModelViewSet):
     permission_classes = [IsReadOnly]
 
 
-class DoctorTypeCrudViewSet(viewsets.ModelViewSet):
-    """
-    (C)reate (R)ead (U)date (D)elete actions.
-    """
-    queryset = DoctorType.objects.all()
-    serializer_class = DoctorTypeSerializer
-    permission_classes = [IsReadOnly]
+# class DoctorTypeCrudViewSet(viewsets.ModelViewSet):
+#     """
+#     (C)reate (R)ead (U)date (D)elete actions.
+#     """
+#     queryset = DoctorType.objects.all()
+#     serializer_class = DoctorTypeSerializer
+#     permis_classes = [IsReadOnly]
 
 
 class DoctorTypeViewSet(viewsets.ModelViewSet):
