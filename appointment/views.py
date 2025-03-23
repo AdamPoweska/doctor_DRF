@@ -96,7 +96,18 @@ class DoctorNameNestedViewSet(viewsets.ReadOnlyModelViewSet):
         return DoctorName.objects.filter(main_specialization_id=self.kwargs['doctor_type_pk'])
 
 
+class AppointmentNestedViewSet(viewsets.ModelViewSet):
+    serializer_class = AppointmentDatesSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
+    def get_queryset(self):
+        return AppointmentDates.objects.filter(doctor_id=self.kwargs['doctor_pk'])
+    
+    def perform_create(self, serializer):
+        doctor = DoctorName.objects.get(pk=self.kwargs['doctor_pk'])
+        serializer.save(doctor=doctor)
+
+        
 # Na daną chwilę nie jest nam potrzebne, przyda się jednak w przyszłości - widok na read only
 # class DataViewSet(viewsets.ReadOnlyModelViewSet):
 #     """

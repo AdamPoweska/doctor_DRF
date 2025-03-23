@@ -5,16 +5,20 @@ from django.contrib.auth.views import LogoutView, LoginView
 
 from . import views
 
-# główne routery
+# main routers
 router = DefaultRouter()
 router.register(r'doctor_types', views.DoctorTypeViewSet, basename='doctortype')
 # router.register(r'doctor_types', views.DoctorTypeCrudViewSet, basename='doctortype')
 router.register(r'doctor_names', views.DoctorNameCrudViewSet, basename='doctorname')
 router.register(r'appointments', views.AppointmentDateCrudViewSet, basename='appointmentdates')
 
-# nested routers
+# 1st level of nested routers
 doctor_nested_router = NestedDefaultRouter(router, r'doctor_types', lookup='doctor_type')
 doctor_nested_router.register(r'doctors', views.DoctorNameNestedViewSet, basename='doctortype-doctor')
+
+# 2nd level of nested router
+appointments_nested_router = NestedDefaultRouter(doctor_nested_router, r'doctors', lookup='doctor')
+appointments_nested_router.register(r'appointments', views.AppointmentNestedViewSet, basename='doctor-appointments')
 
 urlpatterns = [
     # path('', views.HomeView.as_view(), name='hello'),
@@ -24,5 +28,6 @@ urlpatterns = [
     # path('api/', include(router.urls)),
     path('', include(router.urls)),
     path('', include(doctor_nested_router.urls)),
+    path('', include(appointments_nested_router.urls)),
     path('api-auth/', include('rest_framework.urls')), # wejdz na 'http://127.0.0.1:8000/api-auth/login/' lub 'http://127.0.0.1:8000/api-auth/logout/'
 ]
