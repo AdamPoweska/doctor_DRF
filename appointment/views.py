@@ -66,26 +66,26 @@ class DoctorTypeViewSet(viewsets.ModelViewSet):
     permission_classes = [IsReadOnly]
 
     # /doctor_types/<id>/doctors/
-    @action(detail=True, methods=['get'])
-    def doctors(self, request, pk=None):
-        specialization = self.get_object()
-        doctors = DoctorName.objects.filter(main_specialization=specialization)
-        serializer = DoctorNameSimpleSerializer(doctors, many=True, context={'request': request})
-        return Response(serializer.data)
+    # @action(detail=True, methods=['get'])
+    # def doctors(self, request, pk=None):
+    #     specialization = self.get_object()
+    #     doctors = DoctorName.objects.filter(main_specialization=specialization)
+    #     serializer = DoctorNameSimpleSerializer(doctors, many=True, context={'request': request})
+    #     return Response(serializer.data)
 
 
-class DoctorNameNestedViewSet(viewsets.ViewSet):
-    permission_classes = [IsReadOnly]
+# class DoctorNameNestedViewSet(viewsets.ViewSet):
+#     permission_classes = [IsReadOnly]
 
-    # /doctor_types/<doctor_type_pk>/doctors/<doctor_pk>/
-    def retrieve(self, request, doctor_type_pk=None, pk=None):
-        try:
-            doctor = DoctorName.objects.get(pk=pk, main_specialization__id=doctor_type_pk)
-        except DoctorName.DoesNotExist:
-            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+#     # /doctor_types/<doctor_type_pk>/doctors/<doctor_pk>/
+#     def retrieve(self, request, doctor_type_pk=None, pk=None):
+#         try:
+#             doctor = DoctorName.objects.get(pk=pk, main_specialization__id=doctor_type_pk)
+#         except DoctorName.DoesNotExist:
+#             return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = DoctorNameDetailSerializer(doctor, context={'request': request})
-        return Response(serializer.data)
+#         serializer = DoctorNameDetailSerializer(doctor, context={'request': request})
+#         return Response(serializer.data)
 
 
 class DoctorNameNestedViewSet(viewsets.ReadOnlyModelViewSet):
