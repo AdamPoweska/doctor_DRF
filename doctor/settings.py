@@ -128,17 +128,15 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# LOGOUT_REDIRECT_URL = '/' # trzeba dodać żeby po 'LogoutView' zwracało nas na wybraną stronę a nie na wewnętrzną stronke django
 
 REST_FRAMEWORK = {
     'DEFAULT_HTTP_METHODS': ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
-    # 'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny',], # jeśli dostęp mają mieć wszyscy
-    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated',], # jeśli dostęp mają tylko zalogowani
+    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated',], 
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',  # Pozwala na logowanie przez stronę API
-        'rest_framework.authentication.BasicAuthentication',  # Możesz dodać Basic Auth
+        'rest_framework.authentication.SessionAuthentication', 
+        'rest_framework.authentication.BasicAuthentication',  
     ],
 }
 
