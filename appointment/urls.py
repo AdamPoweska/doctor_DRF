@@ -8,7 +8,6 @@ from . import views
 # main routers
 router = DefaultRouter()
 router.register(r'doctor_types', views.DoctorTypeViewSet, basename='doctortype')
-# router.register(r'doctor_types', views.DoctorTypeCrudViewSet, basename='doctortype')
 router.register(r'doctor_names', views.DoctorNameCrudViewSet, basename='doctorname')
 router.register(r'appointments', views.AppointmentDateCrudViewSet, basename='appointmentdates')
 
@@ -21,13 +20,8 @@ appointments_nested_router = NestedDefaultRouter(doctor_nested_router, r'doctors
 appointments_nested_router.register(r'appointments', views.AppointmentNestedViewSet, basename='doctor-appointments')
 
 urlpatterns = [
-    # path('', views.HomeView.as_view(), name='hello'),
-    # path('logout/', LogoutView.as_view(), name='logout'),
-    # path('login/', LoginView.as_view(), name='login'),
-    # path('hellologin/', views.HomeLoginView.as_view(), name='hellologin'),
-    # path('api/', include(router.urls)),
     path('', include(router.urls)),
     path('', include(doctor_nested_router.urls)),
     path('', include(appointments_nested_router.urls)),
-    path('api-auth/', include('rest_framework.urls')), # wejdz na 'http://127.0.0.1:8000/api-auth/login/' lub 'http://127.0.0.1:8000/api-auth/logout/'
+    path('api-auth/', include('rest_framework.urls')),
 ]
