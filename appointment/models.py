@@ -5,7 +5,7 @@ from django.db import models
 class DoctorType(models.Model):
     specialization = models.CharField(
         max_length=50,
-        unique=True # unique na poziomie bazy danych
+        unique=True
     )
 
     def __str__(self):
@@ -18,7 +18,7 @@ class DoctorName(models.Model):
     main_specialization = models.ForeignKey(DoctorType, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} ({self.main_specialization.specialization})" # "main_specialization" to obiekt DoctorType wiec __str__ zwróci np. "object (3)"
+        return f"{self.first_name} {self.last_name} ({self.main_specialization.specialization})"
 
 
 class AppointmentDates(models.Model):
